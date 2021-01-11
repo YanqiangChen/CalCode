@@ -250,7 +250,6 @@ public class Tools {
 
     }
     /*
-    * 四数之和
     * 给定一个包含n个整数的数组nums和一个目标值target,判断nums中数否存在四个元素a,b,c,d使得a+b+c+d=target
     * nums=[1,0,-1,0,-2,2]和target = 0;
     * 满足条件的四元组集合为：
