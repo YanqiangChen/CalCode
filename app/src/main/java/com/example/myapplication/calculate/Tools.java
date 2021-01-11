@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Tools {
     /*
@@ -56,13 +57,13 @@ public class Tools {
 
 
     /*
-    * 最长公共前缀
-    * flower flow flight fl
-    * dog racecar car ""
-    * 思路：
-    * 1.从0-min(firstStr.length,secondStr.length,thirdStr.length)遍历字符串
-    * 2.firstStr.char[i]  secondStr.char[i]  thirdStr.char[i]
-    * */
+     * 最长公共前缀
+     * flower flow flight fl
+     * dog racecar car ""
+     * 思路：
+     * 1.从0-min(firstStr.length,secondStr.length,thirdStr.length)遍历字符串
+     * 2.firstStr.char[i]  secondStr.char[i]  thirdStr.char[i]
+     * */
     public String getPublicPrefix(String firstStr,String secondStr,String thirdStr){
         StringBuffer publicSb = new StringBuffer();
         int min = min(firstStr.length(),secondStr.length(),thirdStr.length());
@@ -94,12 +95,12 @@ public class Tools {
 
 
     /*
-    * 三数之和
-    * 最简单的方式：O(N三次方)遍历，得到N三次方个组合，去重复
-    * 比较好的方式：先进行排序，然后N的三次方进行遍历 时间复杂度O(N的三次方)
-    * 最好的方式：排序，遍历first second 然后从后往前遍历third
-    *
-    * */
+     * 三数之和
+     * 最简单的方式：O(N三次方)遍历，得到N三次方个组合，去重复
+     * 比较好的方式：先进行排序，然后N的三次方进行遍历 时间复杂度O(N的三次方)
+     * 最好的方式：排序，遍历first second 然后从后往前遍历third
+     *
+     * */
     public List<List<Integer>> threeSum(int[] nums) {
         int n = nums.length;
         Arrays.sort(nums);
@@ -141,10 +142,10 @@ public class Tools {
     }
 
     /*
-    * 最接近的三数只和
-    * 输入 nums=[-1,2,1,-4],target=1 输出 2
-    *
-    * */
+     * 最接近的三数只和
+     * 输入 nums=[-1,2,1,-4],target=1 输出 2
+     *
+     * */
     public int threeSumClosest(int[] nums, int target) {
         Arrays.sort(nums);
         int n = nums.length;
@@ -191,8 +192,73 @@ public class Tools {
     }
 
     /*
-    * 给定一个2-9的字符串，返回它能表示的所有字母组合
-    * 23 ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+     * 给定一个2-9的字符串，返回它能表示的所有字母组合
+     * 23 ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+     * 回溯
+     * */
+    public List<String> letterCombinations(String digits) {
+        List<String> combinations = new ArrayList<String>();
+        if (digits.length() == 0) {
+            return combinations;
+        }
+        Map<Character, String> phoneMap = new HashMap<Character, String>() {{
+            put('2', "abc");
+            put('3', "def");
+            put('4', "ghi");
+            put('5', "jkl");
+            put('6', "mno");
+            put('7', "pqrs");
+            put('8', "tuv");
+            put('9', "wxyz");
+        }};
+        backtrack(combinations, phoneMap, digits, 0, new StringBuffer());
+        return combinations;
+    }
+
+    /*
+    * 时间复杂度 输入m个对应3个字母的数字 n个对应4个字母的数字  时间复杂度 3的m次方 x 4的n次方
+    * */
+    public void backtrack(List<String> combinations, Map<Character, String> phoneMap, String digits, int index, StringBuffer combination) {
+        if (index == digits.length()) {
+            combinations.add(combination.toString());
+        } else {
+            char digit = digits.charAt(index);  //获取输入的数字
+            String letters = phoneMap.get(digit);   //根据输入的数字获取字母
+            int lettersCount = letters.length();   //获取字母的数量
+            for (int i = 0; i < lettersCount; i++) {   //遍历字母
+                combination.append(letters.charAt(i));
+                backtrack(combinations, phoneMap, digits, index + 1, combination);
+                combination.deleteCharAt(index);
+            }
+        }
+    }
+    /*
+    * 判断是否是回文数
+    * 反转
+    *12321
+    * 1221
+    * */
+    public int isPalindrome(int x){
+        int reversal=0;
+        while(reversal<x){
+            if(x/10>reversal){
+                reversal=reversal*10+x%10;
+            }
+            x=x/10;
+        }
+        return reversal;
+
+    }
+    /*
+    * 四数之和
+    * 给定一个包含n个整数的数组nums和一个目标值target,判断nums中数否存在四个元素a,b,c,d使得a+b+c+d=target
+    * nums=[1,0,-1,0,-2,2]和target = 0;
+    * 满足条件的四元组集合为：
+    * [
+    *   [-1,0,0,1],
+    *   [-2,-1,1,2],
+    *   [-2,0,0,2]
+    * ]
     * */
 
 

@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 new Tools().changeRomeToNum("MCMXCIV");
                 new Tools().getPublicPrefix("flower","flow","flight");
+                new Tools().isPalindrome(12321);
             }
         });
         findViewById(R.id.btn_2_recycler).setOnClickListener(new View.OnClickListener() {
