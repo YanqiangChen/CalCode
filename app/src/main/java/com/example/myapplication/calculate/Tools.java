@@ -353,10 +353,105 @@ public class Tools {
         return s.charAt(i - 1) == p.charAt(j - 1);
     }
 
+    /*
+    * 最长回文子串
+    * 动态规划  abcdfdbca
+    * 边界条件 {p(i,i)=true p(i,i+1)=(s[i]=s[i+1])}
+    * */
+    public String longestPalindrome(String s) {
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
+        String ans = "";
+        for (int l = 0; l < n; ++l) {  //0-n进行遍历
+            for (int i = 0; i + l < n; ++i) {  //l-n进行遍历
+                int j = i + l;
+                if (l == 0) {   //l=0,p[i][i]=true
+                    dp[i][j] = true;
+                } else if (l == 1) {  //l=1 p[i][i+1]=(s[i]=s[i+1])
+                    dp[i][j] = (s.charAt(i) == s.charAt(j));
+                } else {
+                    dp[i][j] = (s.charAt(i) == s.charAt(j) && dp[i + 1][j - 1]);   //
+                }
+                if (dp[i][j] && l + 1 > ans.length()) {
+                    ans = s.substring(i, i + l + 1);
+                }
+            }
+        }
+        return ans;
+    }
+
+    /*
+     * 删除链表倒数第n个节点
+     * 给定一个链表: 1->2->3->4->5, 和 n = 2. 当删除了倒数第二个节点后，链表变为 1->2->3->5.
+     * dummy node
+     * */
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(0, head);
+        int length = getLength(head);
+        ListNode cur = dummy;
+        for (int i = 1; i < length - n + 1; ++i) {
+            cur = cur.next;
+        }
+        cur.next = cur.next.next;
+        ListNode ans = dummy.next;
+        return ans;
+    }
+
+    public class ListNode{
+        private int val;
+        private ListNode next;
+        public ListNode(){
+
+        }
+        public ListNode(int val){
+
+        }
+        public ListNode(int val,ListNode next){
+
+        }
+
+    }
+    public int getLength(ListNode head) {
+        int length = 0;
+        while (head != null) {
+            ++length;
+            head = head.next;
+        }
+        return length;
+    }
+
+
+    /*
+    * 有效的括号
+    * */
+    public boolean isValid(String str){
+        Map<String,String> brackets = new HashMap<>();
+        brackets.put("(",")");
+        brackets.put("{","}");
+        brackets.put("[","]");
+        ArrayList<Character> list=new ArrayList<>();
+        for(int i=0;i<str.length();i++){
+            char charStr = str.charAt(i);
+            if(list.size()>0){
+                if(brackets.get(list.get(list.size()-1)).equals(charStr)){
+                    list.remove(list.get(list.size()-1));
+                }else{
+                    list.add(charStr);
+                }
+            }else{
+                list.add(charStr);
+            }
+        }
+        if(brackets.size()==0){
+            return true;
+        }else{
+            return false;
+        }
 
 
 
 
+    }
 
 
 
