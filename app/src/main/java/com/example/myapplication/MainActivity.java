@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.myapplication.calculate.Tools;
+import com.example.myapplication.proxy.ProxySubject;
+import com.example.myapplication.proxy.RealSubject;
+import com.example.myapplication.proxy.Subject;
 import com.example.myapplication.recyclerView.RecyclerActivity;
 
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,11 +37,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        findViewById(R.id.proxy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Subject subject = new RealSubject();
+                ProxySubject proxySubject=new ProxySubject(subject);
+                Subject sub = (Subject) Proxy.newProxyInstance(subject.getClass().getClassLoader(),
+                        subject.getClass().getInterfaces(), proxySubject);
+                sub.operation();
+
+
+
+            }
+        });
+
 
 
     }
 
-
-
-
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+    }
 }

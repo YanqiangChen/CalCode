@@ -2,7 +2,9 @@ package com.example.myapplication.calculate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -425,33 +427,38 @@ public class Tools {
     * 有效的括号
     * */
     public boolean isValid(String str){
-        Map<String,String> brackets = new HashMap<>();
-        brackets.put("(",")");
-        brackets.put("{","}");
-        brackets.put("[","]");
-        ArrayList<Character> list=new ArrayList<>();
+        int n = str.length();
+        if (n % 2 == 1) {
+            return false;
+        }
+        Map<Character, Character> pairs = new HashMap<Character, Character>() {{
+            put(')', '(');
+            put(']', '[');
+            put('}', '{');
+        }};
+        Deque<Character> stack = new LinkedList<Character>();
         for(int i=0;i<str.length();i++){
             char charStr = str.charAt(i);
-            if(list.size()>0){
-                if(brackets.get(list.get(list.size()-1)).equals(charStr)){
-                    list.remove(list.get(list.size()-1));
+            if(stack.size()>0){
+                if(pairs.containsKey(charStr)){
+                    if(stack.peek()==pairs.get(charStr)){
+                        stack.pop();
+                    }
                 }else{
-                    list.add(charStr);
+                    stack.push(charStr);
                 }
             }else{
-                list.add(charStr);
+                stack.push(charStr);
             }
         }
-        if(brackets.size()==0){
+        if(stack.size()==0){
             return true;
         }else{
             return false;
         }
 
-
-
-
     }
+
 
 
 
